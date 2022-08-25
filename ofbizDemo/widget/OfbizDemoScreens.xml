@@ -45,7 +45,7 @@ under the License.
                 <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
                     <decorator-section name="body">
 
-                        <screenlet title="${uiLabelMap.OfbizDemoAddOfbizDemoServiceByFtl}">
+                        <screenlet title="add form by ftl">
                             <platform-specific>
                                 <html><html-template location="component://ofbizDemo/webapp/ofbizDemo/crud/AddOfbizDemo.ftl"/></html>
                             </platform-specific>

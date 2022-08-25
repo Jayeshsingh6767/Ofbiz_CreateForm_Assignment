@@ -28,6 +28,20 @@ under the License.
         <description>
             Dummy service to prevent empty files and syntax error - Remove when the 1st real service will be added here 
         </description>
-    </service> 
-    
+    </service>
+    <service name="createOfBizDemoPerson" engine="java" default-entity-name="Person"
+             location="com.companyname.ofbizdemo.services.OfbizDemoServices" invoke="createPerson" auth="false">
+        <description>Create a Person</description>
+        <auto-attributes mode="IN" include="pk" optional="true"/>
+        <auto-attributes mode="OUT" include="pk" optional="false"/>
+        <auto-attributes mode="IN" include="nonpk" optional="true"/>
+        <attribute name="preferredCurrencyUomId" type="String" mode="IN" optional="true"/>
+        <attribute name="description" type="String" mode="IN" optional="true"/>
+        <attribute name="externalId" type="String" mode="IN" optional="true"/>
+        <attribute name="statusId" type="String" mode="IN" optional="true"/>
+        <!-- First and Last names are here optional. This allows to implement simple create user login screen where user is able create account
+            in system with username and password and then later populate rest of the account information. -->
+        <!--        <override name="firstName" optional="false"/>
+                <override name="lastName" optional="false"/>
+        -->    </service>
 </services>

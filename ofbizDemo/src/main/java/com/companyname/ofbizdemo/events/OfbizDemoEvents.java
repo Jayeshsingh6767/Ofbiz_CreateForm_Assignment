@@ -164,7 +164,7 @@ public class OfbizDemoEvents {
 
         try {
             Debug.logInfo("=======Creating person record in event using service createOfbizDemoByGroovyService=========", module);
-            dispatcher.runSync("createOfbizDemoByGroovyService", fieldMap);
+            dispatcher.runSync("createOfBizDemoPerson", fieldMap);
         } catch (GenericServiceException e) {
             String errMsg = "Unable to create new records in person entity: " + e.toString();
             request.setAttribute("_ERROR_MESSAGE_", errMsg);
