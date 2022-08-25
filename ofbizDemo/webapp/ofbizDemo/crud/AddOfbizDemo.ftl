@@ -84,7 +84,7 @@
         <div>
         <h1> E-Mail Address</h1>
          <span class="label">E-Mail Address </span>
-         <input type="text" name="addressLine1" id="addressLine1" class='required' maxlength="50" />*
+         <input type="email" name="email" id="email" class='required' maxlength="50" />*
 
         </div>
 
