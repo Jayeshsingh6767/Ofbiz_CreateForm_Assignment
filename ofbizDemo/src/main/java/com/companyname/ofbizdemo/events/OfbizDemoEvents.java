@@ -7,7 +7,9 @@ import org.apache.ofbiz.base.util.Debug;
 import org.apache.ofbiz.base.util.UtilMisc;
 import org.apache.ofbiz.base.util.UtilValidate;
 import org.apache.ofbiz.entity.Delegator;
+import org.apache.ofbiz.entity.GenericEntityException;
 import org.apache.ofbiz.entity.GenericValue;
+import org.apache.ofbiz.entity.util.EntityQuery;
 import org.apache.ofbiz.service.GenericServiceException;
 import org.apache.ofbiz.service.LocalDispatcher;
 
@@ -108,69 +110,133 @@ public class OfbizDemoEvents {
         }
 
 
-        Map<String, Object> fieldMap= new HashMap<>();
-        fieldMap.put("title", title);
-        fieldMap.put("firstName", firstName);
-        fieldMap.put("lastName", lastName);
-        fieldMap.put("middleName", middleName);
-        fieldMap.put("addressLine1", addressLine1);
-        fieldMap.put("suffix", suffix);
-        fieldMap.put("addressLine2", addressLine2);
-        fieldMap.put("city", city);
-        fieldMap.put("country", country);
-        fieldMap.put("state", state);
-        fieldMap.put("addressSolicitation", addressSolicitation);
-        fieldMap.put("email", email);
-        fieldMap.put("emailSolicitation", emailSolicitation);
-
-        if(!UtilValidate.isEmpty(homePhoneContactNumber)) {
-            fieldMap.put("homePhoneCountryCode", homePhoneCountryCode);
-            fieldMap.put("homePhoneAreaCode", homePhoneAreaCode);
-            fieldMap.put("homePhoneContactNumber", homePhoneContactNumber);
-            fieldMap.put("homePhoneExtention", homePhoneExtention);
-            fieldMap.put("homePhoneSolicitation", homePhoneSolicitation);
-        }
-        if(!UtilValidate.isEmpty(businessPhoneContactNumber)) {
-
-            fieldMap.put("businessPhoneCountryCode", businessPhoneCountryCode);
-            fieldMap.put("businessPhoneContactNumber", businessPhoneContactNumber);
-            fieldMap.put("businessPhoneExtention", businessPhoneExtention);
-            fieldMap.put("businessPhoneSolicitation", businessPhoneSolicitation);
-        }
-        if(!UtilValidate.isEmpty(faxPhoneContactNumber)) {
-
-            fieldMap.put("faxPhoneCountryCode", faxPhoneCountryCode);
-            fieldMap.put("faxPhoneAreaCode", faxPhoneAreaCode);
-            fieldMap.put("faxPhoneContactNumber", faxPhoneContactNumber);
-            fieldMap.put("faxPhoneExtention", faxPhoneExtention);
-            fieldMap.put("faxPhoneSolicitation", faxPhoneSolicitation);
-        }
-
-        if(!UtilValidate.isEmpty(mobilePhoneContactNumber)) {
-
-            fieldMap.put("mobilePhoneCountryCode", mobilePhoneCountryCode);
-            fieldMap.put("mobilePhoneAreaCode", mobilePhoneAreaCode);
-            fieldMap.put("mobilePhoneContactNumber", mobilePhoneContactNumber);
-            fieldMap.put("mobilePhoneExtention", mobilePhoneExtention);
-            fieldMap.put("mobilePhoneSolicitation", mobilePhoneSolicitation);
-        }
-        fieldMap.put("useEmailAddress", useEmailAddress);
-        fieldMap.put("userName", userName);
-        fieldMap.put("password", password);
-        fieldMap.put("repeatPassword", repeatPassword);
-        fieldMap.put("passwordHint", passwordHint);
 
 
 
         try {
             Debug.logInfo("=======Creating person record in event using service createOfbizDemoByGroovyService=========", module);
-            dispatcher.runSync("createOfBizDemoPerson", fieldMap);
+            Map<String, Object> fieldMap= new HashMap<>();
+            fieldMap.put("title", title);
+            fieldMap.put("firstName", firstName);
+            fieldMap.put("lastName", lastName);
+            fieldMap.put("middleName", middleName);
+            fieldMap.put("suffix", suffix);
+            Map<String, Object> serviceResult= dispatcher.runSync("createOfBizDemoPerson", fieldMap);
+            String partyId= (String) serviceResult.get("partyId");
+
+
+            // postal address
+            fieldMap.clear();
+            fieldMap.put("partyId", partyId);
+            fieldMap.put("address1", addressLine1);
+            fieldMap.put("address2", addressLine2);
+            fieldMap.put("city", city);
+            fieldMap.put("countryGeoId", "IND");
+            fieldMap.put("stateProvinceGeoId", "IN-MP");
+            fieldMap.put("postalCode", zip);
+            fieldMap.put("userLogin", userLogin);
+            fieldMap.put("contactMechPurposeTypeId", "SHIPPING_LOCATION");
+            Map<String, Object> outMap = dispatcher.runSync("createPartyPostalAddress", fieldMap);
+            String postalAddressContactMechId = (String) outMap.get("contactMechId");
+
+
+            // email
+            fieldMap.clear();
+            fieldMap.put("emailAddress", email);
+            fieldMap.put("contactMechPurposeTypeId", "PRIMARY_EMAIL");
+            fieldMap.put("partyId", partyId);
+            fieldMap.put("userLogin", userLogin);
+            dispatcher.runSync("createPartyEmailAddress",fieldMap);
+
+
+
+
+            if(!UtilValidate.isEmpty(homePhoneContactNumber)) {
+                fieldMap.clear();
+                fieldMap.put("contactNumber", homePhoneContactNumber);
+                fieldMap.put("partyId", partyId);
+                fieldMap.put("userLogin", userLogin);
+                fieldMap.put("contactMechPurposeTypeId", "PHONE_HOME");
+                fieldMap.put("countryCode", homePhoneCountryCode);
+                fieldMap.put("areaCode", homePhoneAreaCode);
+                fieldMap.put("extention", homePhoneExtention);
+                fieldMap.put("allowSolicitation", homePhoneSolicitation);
+                dispatcher.runSync("createPartyTelecomNumber", fieldMap);
+
+            }
+            if(!UtilValidate.isEmpty(businessPhoneContactNumber)) {
+
+                fieldMap.clear();
+                fieldMap.put("contactNumber", businessPhoneContactNumber);
+                fieldMap.put("partyId", partyId);
+                fieldMap.put("userLogin", userLogin);
+                fieldMap.put("contactMechPurposeTypeId", "PHONE_WORK");
+                fieldMap.put("countryCode", businessPhoneCountryCode);
+                fieldMap.put("areaCode", businessPhoneAreaCode);
+                fieldMap.put("extention", businessPhoneExtention);
+                fieldMap.put("allowSolicitation", businessPhoneSolicitation);
+                dispatcher.runSync("createPartyTelecomNumber", fieldMap);
+
+
+            }
+            if(!UtilValidate.isEmpty(faxPhoneContactNumber)) {
+
+                fieldMap.clear();
+                fieldMap.put("contactNumber", faxPhoneContactNumber);
+                fieldMap.put("partyId", partyId);
+                fieldMap.put("userLogin", userLogin);
+                fieldMap.put("contactMechPurposeTypeId", "FAX_NUMBER");
+                fieldMap.put("countryCode", faxPhoneCountryCode);
+                fieldMap.put("areaCode", faxPhoneAreaCode);
+                fieldMap.put("extention", faxPhoneExtention);
+                fieldMap.put("allowSolicitation", faxPhoneSolicitation);
+                dispatcher.runSync("createPartyTelecomNumber", fieldMap);
+
+
+
+            }
+
+            if(!UtilValidate.isEmpty(mobilePhoneContactNumber)) {
+
+                fieldMap.clear();
+                fieldMap.put("contactNumber", mobilePhoneContactNumber);
+                fieldMap.put("partyId", partyId);
+                fieldMap.put("userLogin", userLogin);
+                fieldMap.put("contactMechPurposeTypeId", "PHONE_MOBILE");
+                fieldMap.put("countryCode", mobilePhoneCountryCode);
+                fieldMap.put("areaCode", mobilePhoneAreaCode);
+                fieldMap.put("extention", mobilePhoneExtention);
+                fieldMap.put("allowSolicitation", mobilePhoneSolicitation);
+                dispatcher.runSync("createPartyTelecomNumber", fieldMap);
+            }
+
+            for(int i=0;i<50;i++,System.out.println("****************"));
+            System.out.println(homePhoneSolicitation);
+            System.out.println(businessPhoneSolicitation);
+            System.out.println(faxPhoneSolicitation);
+            System.out.println(mobilePhoneSolicitation);
+
+            System.out.println(useEmailAddress);
+            fieldMap.put("useEmailAddress", useEmailAddress);
+            fieldMap.put("userName", userName);
+            fieldMap.put("password", password);
+            fieldMap.put("repeatPassword", repeatPassword);
+            fieldMap.put("passwordHint", passwordHint);
+
+
+            // postal address
+
+
+
+            String eventMessage="OFBiz Demo created succesfully.,party id ="+partyId+" contactMech:"+postalAddressContactMechId;
+            request.setAttribute("_EVENT_MESSAGE_",eventMessage );
+
         } catch (GenericServiceException e) {
             String errMsg = "Unable to create new records in person entity: " + e.toString();
             request.setAttribute("_ERROR_MESSAGE_", errMsg);
             return "error";
         }
-        request.setAttribute("_EVENT_MESSAGE_", "OFBiz Demo created succesfully.");
+
         return "success";
     }
 }

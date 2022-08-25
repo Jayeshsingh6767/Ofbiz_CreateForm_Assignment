@@ -31,7 +31,9 @@ public class OfbizDemoServices {
 
         String partyId = (String) context.get("partyId");
         String description = (String) context.get("description");
-
+        String addressLine1= (String) context.get("addressLine1");
+        for(int i=0;i<100;i++,System.out.println("***********************"));
+        System.out.println(addressLine1);
         // if specified partyId starts with a number, return an error
         if (UtilValidate.isNotEmpty(partyId) && partyId.matches("\\d+")) {
             return ServiceUtil.returnError(UtilProperties.getMessage(RES_ERROR,
