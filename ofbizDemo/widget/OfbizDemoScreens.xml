@@ -77,4 +77,33 @@ under the License.
             </widgets>
         </section>
     </screen>
+
+    <screen name="findParty">
+        <section>
+            <actions>
+                <set field="titleProperty" value="PageTitleAddOfbizDemos"/>
+                <set field="headerItem" value="findOfbizDemoFtl"/>
+                <script location="component://ofbizDemo/webapp/ofbizDemo/WEB-INF/actions/crud/PopulateData.groovy"/>
+
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <label text="The Profile of Demo Customer"/>
+                        <screenlet title="Personal Information">
+                            <platform-specific>
+                                <html><html-template location="component://ofbizDemo/webapp/ofbizDemo/crud/ShowPersonalInformation.ftl"/></html>
+                            </platform-specific>
+                        </screenlet>
+                        <screenlet title="Contact Information">
+                            <platform-specific>
+                                <html><html-template location="component://ofbizDemo/webapp/ofbizDemo/crud/ShowContactInformation.ftl"/></html>
+                            </platform-specific>
+                        </screenlet>
+
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
 </screens>

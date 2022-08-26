@@ -56,12 +56,16 @@ under the License.
     <security https="true" auth="true"/>
     <response name="success" type="view" value="findOfbizDemoFtl"/>
     </request-map>
-
+    <request-map uri="findParty">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="findParty"/>
+    </request-map>
 
     <!-- View Mappings -->
     <view-map name="main" type="screen" page="component://ofbizDemo/widget/OfbizDemoScreens.xml#main"/>
     <view-map name="AddOfbizDemoFtl" type="screen" page="component://ofbizDemo/widget/OfbizDemoScreens.xml#AddOfbizDemoFtl"/>
     <view-map name="findOfbizDemoFtl" type="screen" page="component://ofbizDemo/widget/OfbizDemoScreens.xml#findOfbizDemoFtl"/>
+    <view-map name="findParty" type="screen" page="component://ofbizDemo/widget/OfbizDemoScreens.xml#findParty"/>
 
 
 
