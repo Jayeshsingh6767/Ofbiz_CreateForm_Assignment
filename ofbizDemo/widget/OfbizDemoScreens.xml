@@ -40,6 +40,7 @@ under the License.
             <actions>
                 <set field="titleProperty" value="PageTitleAddOfbizDemos"/>
                 <set field="headerItem" value="addOfbizDemoFtl"/>
+                <script location="component://ofbizDemo/webapp/ofbizDemo/WEB-INF/actions/crud/ListOfCountryAndState.groovy"/>
                 </actions>
             <widgets>
                 <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
@@ -56,4 +57,24 @@ under the License.
         </section>
     </screen>
 
+    <screen name="findOfbizDemoFtl">
+        <section>
+            <actions>
+                <set field="titleProperty" value="PageTitleAddOfbizDemos"/>
+                <set field="headerItem" value="findOfbizDemoFtl"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <screenlet title="Find party">
+                            <platform-specific>
+                                <html><html-template location="component://ofbizDemo/webapp/ofbizDemo/crud/FindOfbizDemo.ftl"/></html>
+                            </platform-specific>
+                        </screenlet>
+
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
 </screens>

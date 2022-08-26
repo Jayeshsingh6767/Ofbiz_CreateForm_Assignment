@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.ofbiz.base.util.Debug;
+import org.apache.ofbiz.base.util.UtilDateTime;
 import org.apache.ofbiz.base.util.UtilMisc;
 import org.apache.ofbiz.base.util.UtilValidate;
 import org.apache.ofbiz.entity.Delegator;
@@ -13,6 +14,7 @@ import org.apache.ofbiz.entity.util.EntityQuery;
 import org.apache.ofbiz.service.GenericServiceException;
 import org.apache.ofbiz.service.LocalDispatcher;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,12 +22,10 @@ public class OfbizDemoEvents {
 
     public static final String module = OfbizDemoEvents.class.getName();
 
-    public static String createOfbizDemoEvent(HttpServletRequest request, HttpServletResponse response) {
-        Delegator delegator = (Delegator) request.getAttribute("delegator");
+    public static String createPartyEvent(HttpServletRequest request, HttpServletResponse response) {
         LocalDispatcher dispatcher = (LocalDispatcher) request.getAttribute("dispatcher");
         GenericValue userLogin = (GenericValue) request.getSession().getAttribute("userLogin");
         //for(int i=0;i<100;System.out.println("***************"),i++);
-        String ofbizDemoTypeId = request.getParameter("ofbizDemoTypeId");
         String title = request.getParameter("title");
         String firstName = request.getParameter("firstName");
         String middleName= request.getParameter("middleName");
@@ -69,14 +69,6 @@ public class OfbizDemoEvents {
         String repeatPassword = request.getParameter("repeatPassword");
         String passwordHint = request.getParameter("passwordHint");
 
-
-
-
-
-
-
-
-
         if (UtilValidate.isEmpty(firstName) || UtilValidate.isEmpty(lastName)) {
             String errMsg = "First Name and Last Name are required fields on the form and can't be empty.";
             request.setAttribute("_ERROR_MESSAGE_", errMsg);
@@ -108,10 +100,18 @@ public class OfbizDemoEvents {
             request.setAttribute("_ERROR_MESSAGE_", errMsg);
             return "error";
         }
+        if (!password.equals(repeatPassword)) {
+            String errMsg = "password and repeat password must be same.";
+            request.setAttribute("_ERROR_MESSAGE_", errMsg);
+            return "error";
+        }
 
-
-
-
+        if(useEmailAddress==null && UtilValidate.isEmpty(userName) )
+        {
+            String errMsg = "user name are required fields on the form and can't be empty.";
+            request.setAttribute("_ERROR_MESSAGE_", errMsg);
+            return "error";
+        }
 
         try {
             Debug.logInfo("=======Creating person record in event using service createOfbizDemoByGroovyService=========", module);
@@ -124,21 +124,20 @@ public class OfbizDemoEvents {
             Map<String, Object> serviceResult= dispatcher.runSync("createOfBizDemoPerson", fieldMap);
             String partyId= (String) serviceResult.get("partyId");
 
-
             // postal address
             fieldMap.clear();
             fieldMap.put("partyId", partyId);
             fieldMap.put("address1", addressLine1);
             fieldMap.put("address2", addressLine2);
             fieldMap.put("city", city);
-            fieldMap.put("countryGeoId", "IND");
-            fieldMap.put("stateProvinceGeoId", "IN-MP");
+            fieldMap.put("countryGeoId", country);
+            fieldMap.put("stateProvinceGeoId", state);
             fieldMap.put("postalCode", zip);
             fieldMap.put("userLogin", userLogin);
             fieldMap.put("contactMechPurposeTypeId", "SHIPPING_LOCATION");
+            fieldMap.put("allowSolicitation", addressSolicitation);
             Map<String, Object> outMap = dispatcher.runSync("createPartyPostalAddress", fieldMap);
             String postalAddressContactMechId = (String) outMap.get("contactMechId");
-
 
             // email
             fieldMap.clear();
@@ -146,10 +145,9 @@ public class OfbizDemoEvents {
             fieldMap.put("contactMechPurposeTypeId", "PRIMARY_EMAIL");
             fieldMap.put("partyId", partyId);
             fieldMap.put("userLogin", userLogin);
+            fieldMap.put("allowSolicitation", emailSolicitation);
+
             dispatcher.runSync("createPartyEmailAddress",fieldMap);
-
-
-
 
             if(!UtilValidate.isEmpty(homePhoneContactNumber)) {
                 fieldMap.clear();
@@ -176,11 +174,8 @@ public class OfbizDemoEvents {
                 fieldMap.put("extention", businessPhoneExtention);
                 fieldMap.put("allowSolicitation", businessPhoneSolicitation);
                 dispatcher.runSync("createPartyTelecomNumber", fieldMap);
-
-
             }
             if(!UtilValidate.isEmpty(faxPhoneContactNumber)) {
-
                 fieldMap.clear();
                 fieldMap.put("contactNumber", faxPhoneContactNumber);
                 fieldMap.put("partyId", partyId);
@@ -191,13 +186,9 @@ public class OfbizDemoEvents {
                 fieldMap.put("extention", faxPhoneExtention);
                 fieldMap.put("allowSolicitation", faxPhoneSolicitation);
                 dispatcher.runSync("createPartyTelecomNumber", fieldMap);
-
-
-
             }
 
             if(!UtilValidate.isEmpty(mobilePhoneContactNumber)) {
-
                 fieldMap.clear();
                 fieldMap.put("contactNumber", mobilePhoneContactNumber);
                 fieldMap.put("partyId", partyId);
@@ -215,20 +206,31 @@ public class OfbizDemoEvents {
             System.out.println(businessPhoneSolicitation);
             System.out.println(faxPhoneSolicitation);
             System.out.println(mobilePhoneSolicitation);
-
             System.out.println(useEmailAddress);
-            fieldMap.put("useEmailAddress", useEmailAddress);
-            fieldMap.put("userName", userName);
-            fieldMap.put("password", password);
-            fieldMap.put("repeatPassword", repeatPassword);
+            if(useEmailAddress!=null && useEmailAddress.equals("Y")) {
+                userName=email;
+            }
+
+            Timestamp now = UtilDateTime.nowTimestamp();
+            fieldMap.clear();
+            fieldMap.put("userLoginId",userName);
+            System.out.println(userName);
+
+            fieldMap.put("currentPassword", password);
+            fieldMap.put("currentPasswordVerify", repeatPassword);
             fieldMap.put("passwordHint", passwordHint);
+            fieldMap.put("userLogin", userLogin);
+            fieldMap.put("partyId",partyId);
 
+            dispatcher.runSync("createUserLogin", fieldMap);
+            fieldMap.clear();
+            fieldMap.put("userLoginId", userName);
+            fieldMap.put("groupId", "PARTY_VIEWER");
+            fieldMap.put("fromDate", now);
+            fieldMap.put("userLogin", userLogin);
+            dispatcher.runSync("addUserLoginToSecurityGroup", fieldMap);
 
-            // postal address
-
-
-
-            String eventMessage="OFBiz Demo created succesfully.,party id ="+partyId+" contactMech:"+postalAddressContactMechId;
+            String eventMessage="OFBiz Demo created succesfully.,party id ="+partyId;
             request.setAttribute("_EVENT_MESSAGE_",eventMessage );
 
         } catch (GenericServiceException e) {

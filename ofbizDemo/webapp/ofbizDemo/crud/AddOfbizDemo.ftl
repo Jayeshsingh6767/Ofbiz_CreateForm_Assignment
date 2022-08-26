@@ -1,5 +1,5 @@
 <div class="screenlet-body">
-  <form id="createOfbizDemoEvent" method="post" action="<@ofbizUrl>createOfbizDemoEvent</@ofbizUrl>">
+  <form id="createPartyEvent" method="post" action="<@ofbizUrl>createPartyEvent</@ofbizUrl>">
     <input type="hidden" name="addOfbizDemoFromFtl" value="Y"/>
     <fieldset>
 
@@ -57,18 +57,18 @@
       <div>
         <span class="label">Country</span>
                 <select name="country" class='required'>
-                    <option value='india'>india</option>
-                    <option value='USA'>usa</option>
-
+                     <#list countries as country>
+                    <option value=${country.geoId}>${country.geoName}</option>
+                    </#list>
                 </select>*
       </div>
        <div>
               <span class="label">State</span>
                       <select name="state" class='required'>
-                          <option value='Madhya Pradesh'>india</option>
-                          <option value='Gujrat'>usa</option>
-
-                      </select>*
+                            <#list states as state>
+                            <option value=${state.geoId}>${state.geoName}</option>
+                            </#list>
+                       </select>*
        </div>
 
       <div>
@@ -111,64 +111,64 @@
          <br>
          <span class="label">Home phone</span>
          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-         <input type="text" name="homePhoneCountryCode" id="countryCode" class='required' size="1.5" maxlength="50" />
+         <input type="text" name="homePhoneCountryCode" id="homePhoneCountryCode" class='required' size="1.5" maxlength="50" />
          &nbsp;&nbsp;
-         <input type="text" name="homePhoneAreaCode" id="areaCode" class='required' size="3" maxlength="50" />
+         <input type="text" name="homePhoneAreaCode" id="homePhoneAreaCode" class='required' size="3" maxlength="50" />
          &nbsp;&nbsp;&nbsp;
-         <input type="text" name="homePhoneContactNumber" id="contactNumber" class='required' size="6" maxlength="50" />
+         <input type="text" name="homePhoneContactNumber" id="homePhoneContactNumber" class='required' size="6" maxlength="50" />
          &nbsp;&nbsp;&nbsp;&nbsp;
-         <input type="text" name="homePhoneExtention" id="extention" class='required' size="2" maxlength="50" />
+         <input type="text" name="homePhoneExtention" id="homePhoneExtention" class='required' size="2" maxlength="50" />
          &nbsp;&nbsp;&nbsp;&nbsp;
          <select name="homePhoneSolicitation" >
-              <option value='Y'>N</option>
-              <option value='N'>Y</option>
+              <option value='N'>N</option>
+              <option value='Y'>Y</option>
          </select>
          <br>
          <br>
          <span class="label">Business phone</span>
-         <input type="text" name="businessPhoneCountryCode" id="countryCode" class='required' size="1.5" maxlength="50" />
+         <input type="text" name="businessPhoneCountryCode" id="businessPhoneCountryCode" class='required' size="1.5" maxlength="50" />
          &nbsp;&nbsp;
-         <input type="text" name="businessPhoneAreaCode" id="areaCode" class='required' size="3" maxlength="50" />
+         <input type="text" name="businessPhoneAreaCode" id="businessPhoneAreaCode" class='required' size="3" maxlength="50" />
          &nbsp;&nbsp;&nbsp;
-         <input type="text" name="businessPhoneContactNumber" id="contactNumber" class='required' size="6" maxlength="50" />
+         <input type="text" name="businessPhoneContactNumber" id="businessPhoneContactNumber" class='required' size="6" maxlength="50" />
          &nbsp;&nbsp;&nbsp;&nbsp;
-         <input type="text" name="businessPhoneExtention" id="extention" class='required' size="2" maxlength="50" />
+         <input type="text" name="businessPhoneExtention" id="businessPhoneExtention" class='required' size="2" maxlength="50" />
          &nbsp;&nbsp;&nbsp;&nbsp;
          <select name="businessPhoneSolicitation" >
-              <option value='Y'>N</option>
-              <option value='N'>Y</option>
+              <option value='N'>N</option>
+              <option value='Y'>Y</option>
          </select>
          <br>
          <br>
          <span class="label">Fax phone</span>
          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-         <input type="text" name="faxPhoneCountryCode" id="countryCode" class='required' size="1.5" maxlength="50" />
+         <input type="text" name="faxPhoneCountryCode" id="faxPhoneCountryCode" class='required' size="1.5" maxlength="50" />
          &nbsp;&nbsp;
-         <input type="text" name="faxPhoneAreaCode" id="areaCode" class='required' size="3" maxlength="50" />
+         <input type="text" name="faxPhoneAreaCode" id="faxPhoneAreaCode" class='required' size="3" maxlength="50" />
          &nbsp;&nbsp;&nbsp;
-         <input type="text" name="faxPhoneContactNumber" id="contactNumber" class='required' size="6" maxlength="50" />
+         <input type="text" name="faxPhoneContactNumber" id="faxPhoneContactNumber" class='required' size="6" maxlength="50" />
          &nbsp;&nbsp;&nbsp;&nbsp;
-         <input type="text" name="faxPhoneExtention" id="extention" class='required' size="2" maxlength="50" />
+         <input type="text" name="faxPhoneExtention" id="faxPhoneExtention" class='required' size="2" maxlength="50" />
          &nbsp;&nbsp;&nbsp;&nbsp;
          <select name="faxPhoneSolicitation" >
-              <option value='Y'>N</option>
-              <option value='N'>Y</option>
+              <option value='N'>N</option>
+              <option value='Y'>Y</option>
          </select>
          <br>
          <br>
          <span class="label">Mobile phone</span>
          &nbsp;&nbsp;&nbsp;&nbsp;
-         <input type="text" name="mobilePhoneCountryCode" id="countryCode" class='required' size="1.5" maxlength="50" />
+         <input type="text" name="mobilePhoneCountryCode" id="mobilePhoneCountryCode" class='required' size="1.5" maxlength="50" />
          &nbsp;&nbsp;
-         <input type="text" name="mobilePhoneAreaCode" id="areaCode" class='required' size="3" maxlength="50" />
+         <input type="text" name="mobilePhoneAreaCode" id="mobilePhoneAreaCode" class='required' size="3" maxlength="50" />
          &nbsp;&nbsp;&nbsp;
-         <input type="text" name="mobilePhoneContactNumber" id="contactNumber" class='required' size="6" maxlength="50" />
+         <input type="text" name="mobilePhoneContactNumber" id="mobilePhoneContactNumber" class='required' size="6" maxlength="50" />
          &nbsp;&nbsp;&nbsp;&nbsp;
-         <input type="text" name="mobilePhoneExtention" id="extention" class='required' size="2" maxlength="50" />
+         <input type="text" name="mobilePhoneExtention" id="mobilePhoneExtention" class='required' size="2" maxlength="50" />
          &nbsp;&nbsp;&nbsp;&nbsp;
          <select name="mobilePhoneSolicitation" >
-              <option value='Y'>N</option>
-              <option value='N'>Y</option>
+              <option value='N'>N</option>
+              <option value='Y'>Y</option>
          </select>
 
 

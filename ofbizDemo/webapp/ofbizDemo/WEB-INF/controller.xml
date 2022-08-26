@@ -45,15 +45,24 @@ under the License.
         <security https="true" auth="true"/>
         <response name="success" type="view" value="AddOfbizDemoFtl"/>
     </request-map>
-    <request-map uri="createOfbizDemoEvent">
+    <request-map uri="createPartyEvent">
         <security https="true" auth="true"/>
-        <event type="java" path="com.companyname.ofbizdemo.events.OfbizDemoEvents" invoke="createOfbizDemoEvent"/>
+        <event type="java" path="com.companyname.ofbizdemo.events.OfbizDemoEvents" invoke="createPartyEvent"/>
         <response name="success" type="view" value="main"/>
         <response name="error" type="view" value="AddOfbizDemoFtl"/>
     </request-map>
+
+    <request-map uri="findOfbizDemoFtl">
+    <security https="true" auth="true"/>
+    <response name="success" type="view" value="findOfbizDemoFtl"/>
+    </request-map>
+
+
     <!-- View Mappings -->
     <view-map name="main" type="screen" page="component://ofbizDemo/widget/OfbizDemoScreens.xml#main"/>
     <view-map name="AddOfbizDemoFtl" type="screen" page="component://ofbizDemo/widget/OfbizDemoScreens.xml#AddOfbizDemoFtl"/>
+    <view-map name="findOfbizDemoFtl" type="screen" page="component://ofbizDemo/widget/OfbizDemoScreens.xml#findOfbizDemoFtl"/>
+
 
 
 </site-conf>
