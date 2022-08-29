@@ -1,4 +1,4 @@
-package com.companyname.ofbizdemo.services;
+package com.hotwaxSystems.ofbizdemo.services;
 import java.sql.Timestamp;
 import java.util.*;
 

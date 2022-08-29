@@ -35,7 +35,7 @@ under the License.
             </widgets>
         </section>
     </screen>
-    <screen name="AddOfbizDemoFtl">
+    <screen name="AddParty">
         <section>
             <actions>
                 <set field="titleProperty" value="PageTitleAddOfbizDemos"/>
@@ -48,30 +48,9 @@ under the License.
 
                         <screenlet title="add form by ftl">
                             <platform-specific>
-                                <html><html-template location="component://ofbizDemo/webapp/ofbizDemo/crud/AddOfbizDemo.ftl"/></html>
+                                <html><html-template location="component://ofbizDemo/webapp/ofbizDemo/crud/AddPartyForm.ftl"/></html>
                             </platform-specific>
                         </screenlet>
-                    </decorator-section>
-                </decorator-screen>
-            </widgets>
-        </section>
-    </screen>
-
-    <screen name="findOfbizDemoFtl">
-        <section>
-            <actions>
-                <set field="titleProperty" value="PageTitleAddOfbizDemos"/>
-                <set field="headerItem" value="findOfbizDemoFtl"/>
-            </actions>
-            <widgets>
-                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
-                    <decorator-section name="body">
-                        <screenlet title="Find party">
-                            <platform-specific>
-                                <html><html-template location="component://ofbizDemo/webapp/ofbizDemo/crud/FindOfbizDemo.ftl"/></html>
-                            </platform-specific>
-                        </screenlet>
-
                     </decorator-section>
                 </decorator-screen>
             </widgets>
@@ -82,14 +61,35 @@ under the License.
         <section>
             <actions>
                 <set field="titleProperty" value="PageTitleAddOfbizDemos"/>
+                <set field="headerItem" value="findParty"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <screenlet title="Find party">
+                            <platform-specific>
+                                <html><html-template location="component://ofbizDemo/webapp/ofbizDemo/crud/FindPartyForm.ftl"/></html>
+                            </platform-specific>
+                        </screenlet>
+
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="showPartyInformation">
+        <section>
+            <actions>
+                <set field="titleProperty" value="PageTitleAddOfbizDemos"/>
                 <set field="headerItem" value="findOfbizDemoFtl"/>
-                <script location="component://ofbizDemo/webapp/ofbizDemo/WEB-INF/actions/crud/PopulateData.groovy"/>
+                <script location="component://ofbizDemo/webapp/ofbizDemo/WEB-INF/actions/crud/PopulatePartyData.groovy"/>
 
             </actions>
             <widgets>
                 <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
                     <decorator-section name="body">
-                        <label text="The Profile of Demo Customer"/>
+<!--                        <label text="Profile"/>-->
                         <screenlet title="Personal Information">
                             <platform-specific>
                                 <html><html-template location="component://ofbizDemo/webapp/ofbizDemo/crud/ShowPersonalInformation.ftl"/></html>

@@ -1,4 +1,4 @@
-package com.companyname.ofbizdemo.events;
+package com.hotwaxSystems.ofbizdemo.events;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -69,46 +69,25 @@ public class OfbizDemoEvents {
         String repeatPassword = request.getParameter("repeatPassword");
         String passwordHint = request.getParameter("passwordHint");
 
-        if (UtilValidate.isEmpty(firstName) || UtilValidate.isEmpty(lastName)) {
-            String errMsg = "First Name and Last Name are required fields on the form and can't be empty.";
-            request.setAttribute("_ERROR_MESSAGE_", errMsg);
-            return "error";
-        }
-        if (UtilValidate.isEmpty(addressLine1)) {
-            String errMsg = "address line 1 are required fields on the form and can't be empty.";
-            request.setAttribute("_ERROR_MESSAGE_", errMsg);
-            return "error";
-        }
-
-        if (UtilValidate.isEmpty(city)) {
-            String errMsg = "city are required fields on the form and can't be empty.";
-            request.setAttribute("_ERROR_MESSAGE_", errMsg);
-            return "error";
-        }
-        if (UtilValidate.isEmpty(zip)) {
-            String errMsg = "zip/postal code are required fields on the form and can't be empty.";
-            request.setAttribute("_ERROR_MESSAGE_", errMsg);
-            return "error";
-        }
-        if (UtilValidate.isEmpty(password)) {
-            String errMsg = "password are required fields on the form and can't be empty.";
-            request.setAttribute("_ERROR_MESSAGE_", errMsg);
-            return "error";
-        }
-        if (UtilValidate.isEmpty(repeatPassword)) {
-            String errMsg = "repeat password are required fields on the form and can't be empty.";
-            request.setAttribute("_ERROR_MESSAGE_", errMsg);
+        String errormsg="";
+        if (UtilValidate.isEmpty(firstName)) errormsg+="First name, ";
+        if (UtilValidate.isEmpty(lastName)) errormsg+="Last name, ";
+        if (UtilValidate.isEmpty(addressLine1)) errormsg+="Address line 1, ";
+        if (UtilValidate.isEmpty(city)) errormsg+="City, ";
+        if (UtilValidate.isEmpty(zip))errormsg+="Postal code, ";
+        if (UtilValidate.isEmpty(country)) errormsg+="Country, ";
+        if (UtilValidate.isEmpty(state)) errormsg+="State, ";
+        if(useEmailAddress==null && UtilValidate.isEmpty(userName)) errormsg+="User name, ";
+        if (UtilValidate.isEmpty(password)) errormsg+="Password, ";
+        if (UtilValidate.isEmpty(repeatPassword)) errormsg+="Repeat Password, ";
+        if(errormsg.length()>0)
+        {
+            errormsg+="are required fields on the form and can't be empty.";
+            request.setAttribute("_ERROR_MESSAGE_", errormsg);
             return "error";
         }
         if (!password.equals(repeatPassword)) {
             String errMsg = "password and repeat password must be same.";
-            request.setAttribute("_ERROR_MESSAGE_", errMsg);
-            return "error";
-        }
-
-        if(useEmailAddress==null && UtilValidate.isEmpty(userName) )
-        {
-            String errMsg = "user name are required fields on the form and can't be empty.";
             request.setAttribute("_ERROR_MESSAGE_", errMsg);
             return "error";
         }
@@ -245,16 +224,3 @@ public class OfbizDemoEvents {
 
 
 
-
-/*UtilMisc.toMap("title", title,
-                    "firstName", firstName, "lastName", lastName, "middleName", middleName,"addressLine1", addressLine1,
-                    "suffix", suffix,"addressLine2", addressLine2,"city", city,
-                    "zip", zip,"country", country,"state", state,
-                    "addressSolicitation", addressSolicitation,"email", email,"emailSolicitation", emailSolicitation,
-                    "middleName", middleName,"middleName", middleName,"middleName", middleName,
-                    "middleName", middleName,"middleName", middleName,"middleName", middleName,
-                    "middleName", middleName,"middleName", middleName,"middleName", middleName,
-                    "middleName", middleName,"middleName", middleName,"middleName", middleName,
-                    "middleName", middleName,"middleName", middleName,"middleName", middleName,
-                    "middleName", middleName,"middleName", middleName,"middleName", middleName,
-                    "middleName", middleName,"middleName", middleName,"middleName", middleName,"userLogin", userLogin)*/

@@ -13,9 +13,9 @@ if(contacts)
         System.out.println(purpose)
         if(purpose.equals("SHIPPING_LOCATION"))
         {
-        context.postalAddressPurpose=purpose
-        postalAddress = from("PostalAddress").where("contactMechId", contactMechId).queryOne()
-        context.address1=postalAddress.getString("address1");
+            context.postalAddressPurpose=purpose
+            postalAddress = from("PostalAddress").where("contactMechId", contactMechId).queryOne()
+//        context.address1=postalAddress.getString("address1");
             context.address1=postalAddress.getString("address1");
             context.address2=postalAddress.getString("address2");
             context.city=postalAddress.getString("city");
