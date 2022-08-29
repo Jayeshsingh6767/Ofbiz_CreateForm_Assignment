@@ -114,7 +114,7 @@ public class OfbizDemoEvents {
         }
 
         try {
-            Debug.logInfo("=======Creating person record in event using service createOfbizDemoByGroovyService=========", module);
+            Debug.logInfo("=======Creating person record in event using ofbizDemoEvents", module);
             Map<String, Object> fieldMap= new HashMap<>();
             fieldMap.put("title", title);
             fieldMap.put("firstName", firstName);

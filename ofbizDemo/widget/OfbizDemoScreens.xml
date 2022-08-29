@@ -100,6 +100,11 @@ under the License.
                                 <html><html-template location="component://ofbizDemo/webapp/ofbizDemo/crud/ShowContactInformation.ftl"/></html>
                             </platform-specific>
                         </screenlet>
+                        <screenlet title="User Name and Password">
+                            <platform-specific>
+                                <html><html-template location="component://ofbizDemo/webapp/ofbizDemo/crud/ShowUserInformation.ftl"/></html>
+                            </platform-specific>
+                        </screenlet>
 
                     </decorator-section>
                 </decorator-screen>
